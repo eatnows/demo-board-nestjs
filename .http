@@ -1,0 +1,34 @@
+
+# 게시글 전체 가져오기
+GET http://localhost:3000/board
+
+###
+
+# 게시글 하나 가져오기
+GET http://localhost:3000/board/1
+
+###
+
+POST http://localhost:3000/board
+Content-Type: application/json
+
+{
+  "name": "Inez Dooley",
+  "contents": "contents 11"
+}
+
+###
+
+# 게시글 수정
+
+PUT http://localhost:3000/board/11
+Content-Type: application/json
+
+{
+  "name": "APPLE COMPUTER"
+}
+
+###
+
+# 게시글 삭제
+DELETE http://localhost:3000/board/1
