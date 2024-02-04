@@ -14,7 +14,7 @@ POST http://localhost:3000/board
 Content-Type: application/json
 
 {
-  "name": "Inez Dooley",
+  "userId": 1,
   "contents": "contents 11"
 }
 
@@ -26,7 +26,7 @@ PUT http://localhost:3000/board/11
 Content-Type: application/json
 
 {
-  "name": "APPLE COMPUTER"
+  "contents": "APPLE COMPUTER"
 }
 
 ###

@@ -17,9 +17,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       password: 'password',
       database: 'postgres',
       // 현재 디렉토리 하위에 entity가 포함된 모든 ts, js 파일 (ts가 js로 변환되기 떄문에 js까지 넣어줌)
-      entities: [__dirname + '/**/*.entity.{.ts,.js}'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       // synchronize: true 엔티티가 테이블에 대한 정의를 갖고있어서 엔티티가 변하면 실제 디비에 반영이 됨.
       synchronize: false,
+      logging: true,
     }),
     BoardModule,
   ],

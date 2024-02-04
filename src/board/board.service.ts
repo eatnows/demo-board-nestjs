@@ -1,106 +1,68 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from "./dto/update-board.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { User } from "../entity/user.entity";
+import { Board } from "../entity/board.entity";
 
 @Injectable()
 export class BoardService {
-  private boards = [
-    {
-      name: 'Inez Dooley',
-      contents: 'contents 1',
-      id: 1,
-    },
-    {
-      name: 'Mrs. Bob Brown',
-      contents: 'contents 2',
-      id: 2,
-    },
-    {
-      name: 'Sheila White',
-      contents: 'contents 3',
-      id: 3,
-    },
-    {
-      name: 'Mindy Ruecker',
-      contents: 'contents 4',
-      id: 4,
-    },
-    {
-      name: 'Nelson Schowalter',
-      contents: 'contents 5',
-      id: 5,
-    },
-    {
-      name: 'Debra Armstrong PhD',
-      contents: 'contents 6',
-      id: 6,
-    },
-    {
-      name: 'Deanna Bailey',
-      contents: 'contents 7',
-      id: 7,
-    },
-    {
-      name: 'Misty Connelly',
-      contents: 'contents 8',
-      id: 8,
-    },
-    {
-      name: 'Kim Ruecker',
-      contents: 'contents 9',
-      id: 9,
-    },
-    {
-      name: 'Sophia VonRueden',
-      contents: 'contents 10',
-      id: 10,
-    },
-  ];
-  findAll() {
-    return this.boards;
+  constructor(
+    // repository를 di 할때는 데코레이터가 필요하다
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(Board)
+    private boardRepository: Repository<Board>,
+  ) {}
+
+  async findAll() {
+    return this.boardRepository.find();
   }
 
-  find(id: number) {
-    const index = this.boards.findIndex((board) => board.id === id);
-    return this.boards[index];
+  async find(id: number) {
+    const board = await this.boardRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        user: true,
+      },
+    });
+
+    if (!board) throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
+
+    return board;
   }
 
   create(data: CreateBoardDto) {
-    const newBoard = { id: this.getNextId(), ...data };
-    this.boards.push(newBoard);
-    return newBoard;
+    // create 함수는 DB에 생성하기 위한 인스턴스를 생성한다.
+    // const board = this.boardRepository.create(data);
+    // 실제 디비에 저장하는 메소드 save
+    return this.boardRepository.save(data);
   }
 
-  update(id: number, data: UpdateBoardDto) {
-    const index = this.getBoardId(id);
-    if (index > -1) {
-      this.boards[index] = {
-        ...this.boards[index],
-        ...data,
-      };
-      return this.boards[index];
-    }
+  async update(id: number, data: UpdateBoardDto) {
+    const board = await this.getBoardById(id);
 
-    return null;
+    if (!board) throw new HttpException('Not_Found', HttpStatus.NOT_FOUND);
+
+    return this.boardRepository.update(id, {
+      ...data,
+    });
   }
 
-  delete(id: number) {
-    const index = this.getBoardId(id);
+  async delete(id: number) {
+    const board = await this.getBoardById(id);
 
-    if (index > -1) {
-      const deleteBoard = this.boards[index];
-      this.boards.splice(index, 1);
-      return deleteBoard;
-    }
+    if (!board) throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
 
-    return null;
+    return this.boardRepository.remove(board);
   }
 
-  getBoardId(id: number) {
-    return this.boards.findIndex((board) => board.id === id);
-  }
-
-  getNextId() {
-    return this.boards.sort((a, b) => b.id - a.id)[0].id + 1;
+  async getBoardById(id: number) {
+    return await this.boardRepository.findOneBy({
+      id,
+    });
   }
 }

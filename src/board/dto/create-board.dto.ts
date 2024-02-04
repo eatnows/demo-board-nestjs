@@ -1,17 +1,16 @@
-import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsNumber } from "class-validator";
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBoardDto {
   // PartialType 으로 해당 데이터를 가져올 경우 해당 데코레이터를 제거해줘야한다. 안 그러면 오류 발생
+  @IsNumber()
   @IsNotEmpty()
-  @MinLength(2)
-  @MaxLength(20)
   @ApiProperty({
-    description: '이름',
+    description: '작성자 아이디',
     required: true,
-    example: '홍길동',
+    example: '1',
   })
-  name: string;
+  userId: number;
 
   @IsNotEmpty()
   @ApiProperty({
