@@ -1,13 +1,15 @@
 import {
   Column,
   CreateDateColumn,
-  Entity, ManyToOne,
-  PrimaryColumn, PrimaryGeneratedColumn,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  JoinColumn
-} from "typeorm";
+  JoinColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from "./user.entity";
+import { User } from './user.entity';
 
 @Entity()
 export class Board {
@@ -32,6 +34,6 @@ export class Board {
 
   @ApiProperty({ description: '유저정보' })
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' }) // 실제 테이블에 user_id 와 같은 이름으로 컬럼이 있기 떄문에
+  @JoinColumn({ name: 'userId' }) // 실제 테이블에 user_id 와 같은 이름으로 컬럼이 있기 떄문에
   user: User;
 }
