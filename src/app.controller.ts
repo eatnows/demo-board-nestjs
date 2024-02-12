@@ -1,13 +1,25 @@
-import { Controller, Get, Logger, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Query,
+  Request,
+  UseGuards
+} from "@nestjs/common";
 import { AppService } from './app.service';
 import { Ip } from './decorators/ip.decorator';
 import { ConfigService } from '@nestjs/config';
+import { LocalAuthGuard } from "./auth/local-auth.guard";
+import { AuthService } from "./auth/auth.service";
+import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly configService: ConfigService,
+    private readonly authService: AuthService,
   ) {}
 
   // 로고 클래스를 선언할 때 이 클래스가 선언된 클래스 안에 클래스의 이름을 명시하게 되면
@@ -34,5 +46,17 @@ export class AppController {
     @Query('name') name: string,
   ): string {
     return `${name} hello`;
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async me(@Request() req) {
+    return req.user;
   }
 }

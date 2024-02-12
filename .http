@@ -12,27 +12,29 @@ GET http://localhost:3000/board/1
 # 게시글 생성
 POST http://localhost:3000/board
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJlYXRub3dzMjAyNCIsIm5hbWUiOiJlYXRub3dzbmFtZTIiLCJpYXQiOjE3MDc3MzIzNTYsImV4cCI6MTcwNzczNTk1Nn0.kGz_VQErLhVKED3htdxw4MkiDZOv_IDMU7dNSBFOSVM
 
 {
-  "userId": 1,
-  "contents": "contents 11"
+  "contents": "new api"
 }
 
 ###
 
 # 게시글 수정
 
-PUT http://localhost:3000/board/11
+PUT http://localhost:3000/board/3
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJlYXRub3dzMjAyNCIsIm5hbWUiOiJlYXRub3dzbmFtZTIiLCJpYXQiOjE3MDc3MzMyOTAsImV4cCI6MTcwNzczNjg5MH0.4FCQfCAq-8ne4XDqzHnG_ISwbmVwkqPqFSCkg3rJSJY
 
 {
-  "contents": "APPLE COMPUTER"
+  "contents": "Update COMPUTER"
 }
 
 ###
 
 # 게시글 삭제
-DELETE http://localhost:3000/board/1
+DELETE http://localhost:3000/board/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJlYXRub3dzMjAyNCIsIm5hbWUiOiJlYXRub3dzbmFtZTIiLCJpYXQiOjE3MDc3MzIzNTYsImV4cCI6MTcwNzczNTk1Nn0.kGz_VQErLhVKED3htdxw4MkiDZOv_IDMU7dNSBFOSVM
 
 ###
 GET http://localhost:3000
@@ -67,3 +69,23 @@ Content-Type: application/json
   "username": "eatnows2024",
   "password": "eatnowspassword"
 }
+
+###
+
+# 유저 로그인 (passport)
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "username": "eatnows2024",
+  "password": "eatnowspassword"
+}
+
+###
+
+# 유저 ME
+
+GET http://localhost:3000/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJlYXRub3dzMjAyNCIsIm5hbWUiOiJlYXRub3dzbmFtZTIiLCJpYXQiOjE3MDc3MzMyOTAsImV4cCI6MTcwNzczNjg5MH0.4FCQfCAq-8ne4XDqzHnG_ISwbmVwkqPqFSCkg3rJSJY

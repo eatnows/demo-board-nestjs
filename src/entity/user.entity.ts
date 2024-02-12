@@ -6,6 +6,7 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Board } from './board.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -19,6 +20,7 @@ export class User {
 
   @ApiProperty({ description: '비밀번호' })
   @Column()
+  // @Exclude()
   password: string;
 
   @ApiProperty({ description: '이름' })

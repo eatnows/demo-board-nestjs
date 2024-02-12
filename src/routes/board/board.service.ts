@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from "./dto/update-board.dto";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -42,20 +42,28 @@ export class BoardService {
     return this.boardRepository.save(data);
   }
 
-  async update(id: number, data: UpdateBoardDto) {
+  async update(userId: number, id: number, data: UpdateBoardDto) {
     const board = await this.getBoardById(id);
 
     if (!board) throw new HttpException('Not_Found', HttpStatus.NOT_FOUND);
+
+    if (board.userId !== userId) {
+      throw new ForbiddenException();
+    }
 
     return this.boardRepository.update(id, {
       ...data,
     });
   }
 
-  async delete(id: number) {
+  async delete(userId: number, id: number) {
     const board = await this.getBoardById(id);
 
     if (!board) throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
+
+    if (board.userId !== userId) {
+      throw new ForbiddenException();
+    }
 
     return this.boardRepository.remove(board);
   }
