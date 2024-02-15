@@ -10,8 +10,6 @@ import { Board } from "../../entity/board.entity";
 export class BoardService {
   constructor(
     // repository를 di 할때는 데코레이터가 필요하다
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
     @InjectRepository(Board)
     private boardRepository: Repository<Board>,
   ) {}
